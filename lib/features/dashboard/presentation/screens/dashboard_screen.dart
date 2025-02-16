@@ -8,7 +8,8 @@ import 'package:bloc_ecommerce/features/authentication/presentation/business_log
 import 'package:bloc_ecommerce/features/dashboard/domain/entities/products_entity.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/all_products_bloc/all_products_bloc.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/cart_cubit/cart_cubit.dart';
-import 'package:bloc_ecommerce/features/dashboard/presentation/screens/views/dashboard_drawer_view.dart';
+import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/checkout_dialog_widget.dart';
+import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/dashboard_drawer_widget.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/product_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DashboardDrawerView(),
+      drawer: const DashboardDrawerWidget(),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<AllProductsBloc>().add(GetAllProductsEvent());
@@ -98,9 +99,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   );
                 }
-                return const SliverToBoxAdapter(
-                  child: Center(
-                    child: CircularProgressIndicator(),
+                return SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height - 100,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 );
               },
@@ -144,12 +149,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Column(children: [
                       Text(
                         'Total : \$${totalAmount.toStringAsFixed(2)}',
-                        style: fontMedium.copyWith(color: Colors.white),
+                        style: fontBold.copyWith(color: Colors.white),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeSmall),
                       ElevatedButton(
-                        onPressed: () {},
-                        child: Text('Checkout', style: fontMedium),
+                        onPressed: () {
+                          showDialog(context: context, builder: (context) {
+                            return CheckoutDialogWidget();
+                          });
+                        },
+                        child: Text('Order Place', style: fontBold),
                       ),
                     ]),
                   ),

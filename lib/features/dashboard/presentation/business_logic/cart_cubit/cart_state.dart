@@ -28,3 +28,11 @@ final class CartError extends CartState {
   @override
   List<Object> get props => [message];
 }
+
+final class CheckoutCartEditToggled extends CartState {
+  final bool isEditing;
+  const CheckoutCartEditToggled(this.isEditing);
+
+  @override
+  List<Object> get props => [isEditing];
+}

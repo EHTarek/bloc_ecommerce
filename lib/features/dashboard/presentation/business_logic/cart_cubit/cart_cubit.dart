@@ -59,4 +59,10 @@ class CartCubit extends Cubit<CartState> {
       (_) => emit(CartUpdated([])),
     );
   }
+
+  bool isCheckoutCartEditing = false;
+  void toggleCheckoutCartEditing() {
+    isCheckoutCartEditing = !isCheckoutCartEditing;
+    emit(CheckoutCartEditToggled(isCheckoutCartEditing));
+  }
 }
