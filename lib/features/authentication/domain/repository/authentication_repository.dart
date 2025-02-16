@@ -12,5 +12,7 @@ abstract base class AuthenticationRepository extends Repository {
 
   Future<Either<Failure, LoginResponseEntity>> login(LoginRequestEntity data);
 
+  Future<Either<Failure, LoginResponseEntity>> getUserData();
+
   Future<Either<Failure, bool>> logout(EmptyParam data);
 }

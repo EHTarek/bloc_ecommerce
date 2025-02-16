@@ -9,12 +9,5 @@ List<GoRoute> _onboardingRoutes() {
         return const MaterialPage(child: SplashScreen());
       },
     ),
-    GoRoute(
-      path: Routes.onboarding,
-      name: Routes.onboarding,
-      pageBuilder: (context, state) {
-        return const MaterialPage(child: OnboardingScreen());
-      },
-    ),
   ];
 }

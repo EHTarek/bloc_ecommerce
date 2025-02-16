@@ -3,7 +3,8 @@ import 'package:bloc_ecommerce/common/widgets/custom_textfield_widget.dart';
 import 'package:bloc_ecommerce/core/extentions/go_router_extention.dart';
 import 'package:bloc_ecommerce/core/navigation/routes.dart';
 import 'package:bloc_ecommerce/core/theme/style.dart';
-import 'package:bloc_ecommerce/features/authentication/presentation/cubit/authentication_cubit.dart';
+import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_bloc/authentication_bloc.dart';
+import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_cubit/authentication_cubit.dart';
 import 'package:bloc_ecommerce/features/authentication/presentation/widget/link_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/cached/preferences.dart';
 import '../../../../core/cached/preferences_key.dart';
 import '../../../../core/di/dependency_injection.dart';
-import '../bloc/authentication_bloc.dart';
 
 part '../widget/login_form.dart';
 

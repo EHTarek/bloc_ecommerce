@@ -1,6 +1,10 @@
+import 'package:bloc_ecommerce/app_config.dart';
 import 'package:bloc_ecommerce/core/navigation/routes.dart';
 import 'package:bloc_ecommerce/core/cached/preferences.dart';
 import 'package:bloc_ecommerce/core/cached/preferences_key.dart';
+import 'package:bloc_ecommerce/core/theme/style.dart';
+import 'package:bloc_ecommerce/core/theme/theme.dart';
+import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_cubit/authentication_cubit.dart';
 import 'package:bloc_ecommerce/features/on_boarding/presentation/business_logic/splash_bloc/splash_bloc.dart';
 import 'package:bloc_ecommerce/core/di/dependency_injection.dart';
 import 'package:flutter/material.dart';
@@ -35,14 +39,14 @@ class _SplashScreenState extends State<SplashScreen> {
       body: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
           if (state is SplashLoaded) {
-            getOnboardingStatus();
+            navigateToDashboard();
           }
         },
         child: Container(
           width: MediaQuery.sizeOf(context).width,
           height: MediaQuery.sizeOf(context).height,
-          decoration: const BoxDecoration(
-            color: Colors.black54,
+          decoration: BoxDecoration(
+            color: context.color.primary.withValues(alpha: 0.4),
             // image: DecorationImage(
             //   image: AssetImage('assets/images/splash/splash_bg.png'),
             //   fit: BoxFit.cover,
@@ -53,8 +57,12 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Image.asset('assets/images/splash/splash_logo.png'),
+              FlutterLogo(size: 200),
               const SizedBox(height: 20),
-              // const Text(appName),
+              Text(AppConfig.appName, style: fontBold.copyWith(
+                fontSize: 24,
+                color: context.color.primary,
+              )),
             ],
           ),
         ),
@@ -62,22 +70,12 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void getOnboardingStatus() async {
-    final prefs = sl<Preferences>();
-    final isViewed = prefs.getBoolValue(keyName: PreferencesKey.kOnboardingStatus);
-    if (!isViewed) {
-      navigateToOnboarding();
-    } else {
-      navigateToDashboard();
-    }
-  }
-
-  void navigateToOnboarding() {
-    context.pushReplacementNamed(Routes.onboarding);
-  }
-
   void navigateToDashboard() {
-    // context.pushReplacementNamed(Routes.homeTab);
-    context.pushReplacementNamed(Routes.login);
+    bool isLoggedIn = sl<AuthenticationCubit>().isUserLoggedIn();
+    if(isLoggedIn) {
+      context.pushReplacementNamed(Routes.homeTab);
+    } else {
+      context.pushReplacementNamed(Routes.login);
+    }
   }
 }

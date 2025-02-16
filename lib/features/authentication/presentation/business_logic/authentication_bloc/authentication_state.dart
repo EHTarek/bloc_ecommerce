@@ -18,6 +18,7 @@ final class AuthenticationLoginSuccess extends AuthenticationState {
   List<Object> get props => [loginResponse];
 }
 
+final class AuthenticationLogoutInitial extends AuthenticationState {}
 final class AuthenticationLogoutSuccess extends AuthenticationState {}
 
 final class AuthenticationRegistrationSuccess extends AuthenticationState {
@@ -37,4 +38,13 @@ final class AuthenticationFailure extends AuthenticationState {
 }
 
 final class AuthenticationNoInternet extends AuthenticationState {}
+
 final class AuthenticationSessionOut extends AuthenticationState {}
+
+final class AuthenticationUserDataLoaded extends AuthenticationState {
+  final LoginResponseEntity loginResponse;
+  const AuthenticationUserDataLoaded(this.loginResponse);
+
+  @override
+  List<Object> get props => [loginResponse];
+}

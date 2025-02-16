@@ -24,6 +24,14 @@ class LoginResponseEntity extends LoginEntity {
     this.id,
     this.data,
   });
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "message": message,
+    "token": token,
+    "id": id,
+    "data": data?.toJson(),
+  };
 }
 
 class DataEntity {

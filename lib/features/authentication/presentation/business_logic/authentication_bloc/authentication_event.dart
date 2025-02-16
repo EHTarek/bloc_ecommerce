@@ -18,3 +18,9 @@ class LogoutRequested extends AuthenticationEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetLoggedInUserData extends AuthenticationEvent {
+  const GetLoggedInUserData();
+  @override
+  List<Object> get props => [];
+}
