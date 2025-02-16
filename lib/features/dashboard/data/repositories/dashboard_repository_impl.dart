@@ -102,5 +102,18 @@ class DashboardRepositoryImpl implements DashboardRepository {
     }
   }
 
-
+  @override
+  Future<Either<Failure, String>> cartCheckout(List<Map<String, dynamic>> carts) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDataSource.cartCheckout(carts));
+      } on UnauthorizedException {
+        return const Left(TokenInvalid(message: 'Invalid Token'));
+      } catch (_) {
+        return const Left(ServerFailure(message: 'Something went wrong!'));
+      }
+    } else {
+      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    }
+  }
 }

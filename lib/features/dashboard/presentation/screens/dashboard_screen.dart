@@ -113,8 +113,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           ]),
 
-          BlocBuilder<CartCubit, CartState>(
+          BlocConsumer<CartCubit, CartState>(
             buildWhen: (previous, current) => current is CartUpdated,
+            listener: (context, state) {
+              if (state is CartError) {
+                showCustomSnackBar(state.message);
+              } else if (state is CartCheckoutSuccess) {
+                showCustomSnackBar(state.message, isError: false);
+
+              }
+            },
             builder: (context, state) {
               double totalAmount = 0;
               if(state is CartUpdated) {

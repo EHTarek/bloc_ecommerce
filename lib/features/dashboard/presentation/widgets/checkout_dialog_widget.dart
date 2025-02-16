@@ -1,5 +1,4 @@
 import 'package:bloc_ecommerce/common/widgets/custom_snackbar_widget.dart';
-import 'package:bloc_ecommerce/core/di/dependency_injection.dart';
 import 'package:bloc_ecommerce/core/theme/style.dart';
 import 'package:bloc_ecommerce/core/theme/theme.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/cart_cubit/cart_cubit.dart';
@@ -40,7 +39,7 @@ class CheckoutDialogWidget extends StatelessWidget {
               ),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // Prevents unnecessary expansion
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     ...cartState.cart.map((product) => Padding(
                       padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeExtraSmall),
@@ -99,9 +98,8 @@ class CheckoutDialogWidget extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
+                    context.read<CartCubit>().cartCheckout(carts: cartState.cart);
                     context.pop();
-                    sl<CartCubit>().clearCart();
-                    showCustomSnackBar('Order placed successfully', isError: false);
                   },
                   child: Text('Checkout', style: fontBold.withColor(Colors.teal)),
                 ),

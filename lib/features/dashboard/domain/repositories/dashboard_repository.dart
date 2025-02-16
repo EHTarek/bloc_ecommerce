@@ -9,4 +9,5 @@ abstract class DashboardRepository {
   Future<Either<Failure, List<CartProductsEntity>>> removeFromCart(int productId);
   Future<Either<Failure, List<CartProductsEntity>>> loadCart();
   Future<Either<Failure, void>> clearCart();
+  Future<Either<Failure, String>> cartCheckout(List<Map<String, dynamic>> carts);
 }

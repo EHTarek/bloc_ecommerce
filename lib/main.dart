@@ -21,6 +21,15 @@ Future<void> main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
     // [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
   );
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 
   HttpOverrides.global = MyHttpOverrides();
   Bloc.observer = AppObserver();
@@ -60,6 +69,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => CartCubit(
           addToCartUseCase: sl(), removeFromCartUseCase: sl(),
           loadCartUseCase: sl(), clearCartUseCase: sl(),
+          cartCheckoutUseCase: sl(),
         )),
       ],
       child: MediaQuery.withClampedTextScaling(

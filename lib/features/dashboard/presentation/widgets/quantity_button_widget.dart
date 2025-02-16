@@ -82,7 +82,7 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
                     inputType: TextInputType.number,
                     inputAction: TextInputAction.done,
                     onSubmit: () {
-                      final newQuantity = int.tryParse(_quantityController.text) ?? 0;
+                      final newQuantity = int.tryParse(_quantityController.text) ?? _quantity;
                       if (newQuantity > 0 && newQuantity <= (double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0)) {
                         context.read<CartCubit>().addToCart(
                           CartProductsEntity(

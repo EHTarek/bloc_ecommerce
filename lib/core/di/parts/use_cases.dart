@@ -5,6 +5,7 @@ void _useCases() {
     ..registerLazySingleton(() => GetProducts(sl()))
     ..registerLazySingleton(() => LoginUseCase(sl()))
     ..registerLazySingleton(() => GetUserData(sl()))
+    ..registerLazySingleton(() => CartCheckout(sl()))
     ..registerLazySingleton(() => LogoutUseCase(sl()))
     ..registerLazySingleton(() => AddToCart(sl()))
     ..registerLazySingleton(() => LoadCart(sl()))

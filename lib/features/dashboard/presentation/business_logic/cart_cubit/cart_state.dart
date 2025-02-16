@@ -36,3 +36,12 @@ final class CheckoutCartEditToggled extends CartState {
   @override
   List<Object> get props => [isEditing];
 }
+
+final class CartCheckoutSuccess extends CartState {
+  final String message;
+
+  const CartCheckoutSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

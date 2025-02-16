@@ -1,6 +1,7 @@
 import 'package:bloc_ecommerce/common/widgets/custom_snackbar_widget.dart';
 import 'package:bloc_ecommerce/common/widgets/custom_textfield_widget.dart';
 import 'package:bloc_ecommerce/core/extentions/go_router_extention.dart';
+import 'package:bloc_ecommerce/core/extra/validator.dart';
 import 'package:bloc_ecommerce/core/navigation/routes.dart';
 import 'package:bloc_ecommerce/core/theme/style.dart';
 import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_bloc/authentication_bloc.dart';
@@ -13,8 +14,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/cached/preferences.dart';
 import '../../../../core/cached/preferences_key.dart';
 import '../../../../core/di/dependency_injection.dart';
-
-part '../widget/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -62,19 +61,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const FlutterLogo(size: 200),
                     const SizedBox(height: 80),
-                    // const _LoginForm(),
 
                     CustomTextField(
                       controller: _emailController,
                       hintText: 'Email',
                       labelText: 'Email',
                       inputType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email is required';
-                        }
-                        return null;
-                      },
+                      validator: (value)=> Validator.validateEmail(value),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeSmall),
 
@@ -84,12 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: 'Password',
                       isPassword: true,
                       inputAction: TextInputAction.done,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Password is required';
-                        }
-                        return null;
-                      },
+                      validator: (value)=> Validator.validatePassword(value, null),
                     ),
 
                     Row(

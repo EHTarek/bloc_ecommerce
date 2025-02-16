@@ -12,12 +12,14 @@ class CartCubit extends Cubit<CartState> {
   final RemoveFromCart removeFromCartUseCase;
   final LoadCart loadCartUseCase;
   final ClearCart clearCartUseCase;
+  final CartCheckout cartCheckoutUseCase;
 
   CartCubit({
     required this.addToCartUseCase,
     required this.removeFromCartUseCase,
     required this.loadCartUseCase,
     required this.clearCartUseCase,
+    required this.cartCheckoutUseCase,
   }) : super(CartInitial());
 
   Future<void> loadCart() async {
@@ -57,6 +59,19 @@ class CartCubit extends Cubit<CartState> {
     result.fold(
       (failure) => emit(CartError(failure.message)),
       (_) => emit(CartUpdated([])),
+    );
+  }
+
+  Future<void> cartCheckout({required List<CartProductsEntity> carts}) async {
+    emit(CartLoading());
+    final Either<Failure, String> result = await cartCheckoutUseCase(carts: carts);
+
+    result.fold(
+      (failure) => emit(CartError(failure.message)),
+      (success) {
+        emit(CartCheckoutSuccess(success));
+        clearCart();
+      },
     );
   }
 

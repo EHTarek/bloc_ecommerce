@@ -8,6 +8,7 @@ void _blocs() {
     ..registerFactory<CartCubit>(() => CartCubit(
       addToCartUseCase: sl(), removeFromCartUseCase: sl(),
       loadCartUseCase: sl(), clearCartUseCase: sl(),
+      cartCheckoutUseCase: sl(),
     ))
     ..registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
       loginUseCase: sl(), logoutUseCase: sl(), getUserData: sl(),

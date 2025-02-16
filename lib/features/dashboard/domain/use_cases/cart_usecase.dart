@@ -42,3 +42,14 @@ final class LoadCart {
     return repository.loadCart();
   }
 }
+
+final class CartCheckout {
+  final DashboardRepository repository;
+
+  CartCheckout(this.repository);
+
+  Future<Either<Failure, String>> call({required List<CartProductsEntity> carts}) {
+    final List<Map<String, dynamic>> cartsData = carts.map((e) => e.toJson()).toList();
+    return repository.cartCheckout(cartsData);
+  }
+}

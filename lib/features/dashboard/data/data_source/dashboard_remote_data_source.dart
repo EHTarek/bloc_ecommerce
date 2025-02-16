@@ -7,6 +7,8 @@ import 'package:bloc_ecommerce/features/dashboard/data/models/products_model.dar
 
 abstract class DashboardRemoteDataSource {
   Future<List<ProductsModel>> getProducts();
+
+  Future<String> cartCheckout(List<Map<String, dynamic>> carts);
 }
 
 class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
@@ -25,5 +27,17 @@ class DashboardRemoteDataSourceImpl implements DashboardRemoteDataSource {
     } else {
       throw ServerException();
     }
+  }
+
+  @override
+  Future<String> cartCheckout(List<Map<String, dynamic>> carts) async {
+    // final response = await client.postData(ApiEndpoints.getAllProducts());
+    if (true) {
+      return 'Order placed successfully';
+    } /*else if (response.statusCode == 401) {
+      throw UnauthorizedException();
+    } else {
+      throw ServerException();
+    }*/
   }
 }
