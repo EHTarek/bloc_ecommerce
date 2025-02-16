@@ -1,20 +1,19 @@
 import 'dart:io';
 
 import 'package:bloc_ecommerce/app_config.dart';
+import 'package:bloc_ecommerce/core/di/dependency_injection.dart';
 import 'package:bloc_ecommerce/core/extra/app_observer.dart';
 import 'package:bloc_ecommerce/core/navigation/router.dart';
 import 'package:bloc_ecommerce/core/theme/theme.dart';
-import 'package:bloc_ecommerce/features/authentication/domain/use_case/authentication_use_case.dart';
-import 'package:bloc_ecommerce/features/authentication/presentation/cubit/authentication_cubit.dart';
-import 'package:bloc_ecommerce/features/dashboard/domain/use_cases/get_dashboard_products_category.dart';
-import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/dashboard_products_category_bloc/dashboard_products_category_bloc.dart';
+import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_bloc/authentication_bloc.dart';
+import 'package:bloc_ecommerce/features/authentication/presentation/business_logic/authentication_cubit/authentication_cubit.dart';
+import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/all_products_bloc/all_products_bloc.dart';
+import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:bloc_ecommerce/features/on_boarding/presentation/business_logic/splash_bloc/splash_bloc.dart';
-import 'package:bloc_ecommerce/core/di/dependency_injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +29,21 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _router = appRouteConfig;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +51,19 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => SplashBloc()),
         BlocProvider(create: (context) => AuthenticationBloc(
-          loginUseCase: sl<LoginUseCase>(),
-          logoutUseCase: sl<LogoutUseCase>(),
+          loginUseCase: sl(), logoutUseCase: sl(), getUserData: sl(),
         )),
         BlocProvider(create: (context) => AuthenticationCubit()),
-        BlocProvider(
-          create: (context) => DashboardProductsCategoryBloc(
-            getDashboardProductsCategory: sl<GetDashboardProductsCategory>(),
-          ),
-        ),
+        BlocProvider(create: (context) => AllProductsBloc(
+          getProductsUseCase: sl(),
+        )),
+        BlocProvider(create: (context) => CartCubit(
+          addToCartUseCase: sl(), removeFromCartUseCase: sl(),
+          loadCartUseCase: sl(), clearCartUseCase: sl(),
+        )),
       ],
       child: MediaQuery.withClampedTextScaling(
-        maxScaleFactor: 1.5,
+        maxScaleFactor: 1,
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: AppConfig.appName,
@@ -58,9 +71,8 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
 
           /// Navigation
-          routerConfig: appRouteConfig,
-          // initialRoute: Routes.kRoot,
-          // onGenerateRoute: RouteGenerator.generateRoute,
+          routerConfig: _router,
+          restorationScopeId: 'app_router',
         ),
       ),
     );

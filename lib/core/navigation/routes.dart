@@ -2,7 +2,6 @@ class Routes {
   ///! Onboarding
   static const String initial = '/';
   static const String splash = '/splash';
-  static const String onboarding = '/onboarding';
 
   ///! Authentication
   static const String login = '/login';

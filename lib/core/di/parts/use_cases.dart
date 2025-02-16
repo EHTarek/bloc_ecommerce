@@ -2,9 +2,12 @@ part of '../dependency_injection.dart';
 
 void _useCases() {
   sl
-    ..registerLazySingleton(() => GetDashboardProductsCategory(
-      dashboardRepository: sl(),
-    ))
+    ..registerLazySingleton(() => GetProducts(sl()))
     ..registerLazySingleton(() => LoginUseCase(sl()))
-    ..registerLazySingleton(() => LogoutUseCase(sl()));
+    ..registerLazySingleton(() => GetUserData(sl()))
+    ..registerLazySingleton(() => LogoutUseCase(sl()))
+    ..registerLazySingleton(() => AddToCart(sl()))
+    ..registerLazySingleton(() => LoadCart(sl()))
+    ..registerLazySingleton(() => ClearCart(sl()))
+    ..registerLazySingleton(() => RemoveFromCart(sl()));
 }

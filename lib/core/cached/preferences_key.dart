@@ -10,4 +10,6 @@ class PreferencesKey {
   static const String kUserAuthData = 'userAuthData';
 
   static const String kOnboardingStatus = 'onboardingStatus';
+
+  static const String kCartProducts = 'cartProducts';
 }

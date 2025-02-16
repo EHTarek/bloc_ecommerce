@@ -5,7 +5,13 @@ void _dataSources() {
     ..registerLazySingleton<DashboardRemoteDataSource>(() => DashboardRemoteDataSourceImpl(
       client: sl(),
     ))
-    ..registerLazySingleton<AuthenticationDataSource>(() => AuthenticationDataSourceImpl(
-      client: sl(),
+    ..registerLazySingleton<DashboardLocalDataSource>(() => DashboardLocalDataSourceImpl(
+      prefs: sl(),
+    ))
+    ..registerLazySingleton<AuthenticationRemoteDataSource>(() => AuthenticationDataRemoteSourceImpl(
+      client: sl(), prefs: sl(), tokenService: sl(),
+    ))
+    ..registerLazySingleton<AuthenticationLocalDataSource>(() => AuthenticationLocalDataSourceImpl(
+      prefs: sl(),
     ));
 }
