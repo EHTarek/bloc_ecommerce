@@ -1,10 +1,27 @@
-# bloc_ecommerce
+# E-Commerce Mobile App
 
-E-Commerce app with Flutter BloC and DDD
+E-Commerce app with Flutter BloC and DDD.
 
+## Screenshot
 
+![1](https://res.cloudinary.com/dp3tzm2wz/image/upload/v1739746757/1_vtmlel.jpg)
+![2](https://res.cloudinary.com/dp3tzm2wz/image/upload/v1739746757/2_lchzrq.jpg)
+
+## App Access
+
+- **Admin**: Use the following credentials to login as an admin:
+    - Email: admin@gmail.com
+    - Password: 12345678
+
+## Technologies Used
+
+- **Flutter**: 3.27.4 (Stable Channel)
+- **Dart**: 3.6.2
+- **BloC**: For state management and route management.
+- **DDD**: Domain Driven Design for project structure.
+
+## Project Structure
 ```
-
  lib
   ├─ app_config.dart
   ├─ common
@@ -151,5 +168,28 @@ E-Commerce app with Flutter BloC and DDD
   │        └─ screens
   │           └─ splash_screen.dart
   └─ main.dart
+```
 
+## Installation
+
+To run this app on your local machine, follow these steps:
+
+1. Clone the repository:
+```bash
+  git clone https://github.com/EHTarek/bloc_ecommerce.git
+```
+2. Navigate to the project directory:
+```bash
+  cd bloc_ecommerce
+```
+3. Clean and get dependencies:
+```bash
+  flutter clean
+```
+```bash
+  flutter pub get
+```
+4. Run the app:
+```bash
+  flutter run
 ```
