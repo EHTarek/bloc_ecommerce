@@ -17,7 +17,8 @@ E-Commerce app with Flutter BloC and DDD.
 
 - **Flutter**: 3.27.4 (Stable Channel)
 - **Dart**: 3.6.2
-- **BloC**: For state management and route management.
+- **BloC**: For state management
+- **GoRouter**: For route management
 - **DDD**: Domain Driven Design for project structure.
 
 ## Project Structure
