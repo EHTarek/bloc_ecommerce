@@ -38,16 +38,12 @@ final class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Future<Either<Failure, LoginResponseEntity>> login(LoginRequestEntity data) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await remote.login(data.toJson()));
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Email or Password is incorrect!'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      return Right(await remote.login(data.toJson()));
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Email or Password is incorrect!'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'No Internet Connection!'));
     }
   }
 
