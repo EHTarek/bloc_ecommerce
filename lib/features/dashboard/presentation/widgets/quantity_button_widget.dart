@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_ecommerce/common/widgets/custom_snackbar_widget.dart';
 import 'package:bloc_ecommerce/common/widgets/custom_textfield_widget.dart';
 import 'package:bloc_ecommerce/features/dashboard/domain/entities/cart_products_entity.dart';
@@ -18,6 +20,7 @@ class QuantityButtonWidget extends StatefulWidget {
 class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
   late TextEditingController _quantityController;
   int _quantity = 0;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -28,6 +31,7 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _quantityController.dispose();
     super.dispose();
   }
@@ -49,19 +53,7 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
           return _quantity == 0 ? Align(
             alignment: Alignment.bottomRight,
             child: IconButton(
-              onPressed: () {
-                if((double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0) > _quantity){
-                  context.read<CartCubit>().addToCart(
-                    CartProductsEntity(
-                      productId: widget.product.id!,
-                      quantity: 1,
-                      product: widget.product,
-                    ),
-                  );
-                }else{
-                  showCustomSnackBar('Out of stock');
-                }
-              },
+              onPressed: () => addToCart(1),
               icon: const Icon(CupertinoIcons.cart),
             ),
           ) : Align(
@@ -81,33 +73,24 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
                     isNumber: true,
                     inputType: TextInputType.number,
                     inputAction: TextInputAction.done,
+                    onChanged: (_) {
+                      if (_debounce?.isActive ?? false) _debounce?.cancel();
+                      _debounce = Timer(Duration(milliseconds: 500), () {
+                        final newQuantity = int.tryParse(_quantityController.text) ?? 0;
+                        addToCart(newQuantity);
+                      });
+                    },
                     onSubmit: () {
-                      final newQuantity = int.tryParse(_quantityController.text) ?? _quantity;
-                      if (newQuantity > 0 && newQuantity <= (double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0)) {
-                        context.read<CartCubit>().addToCart(
-                          CartProductsEntity(
-                            productId: widget.product.id!,
-                            quantity: newQuantity,
-                            product: widget.product,
-                          ),
-                        );
-                      } else if((double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0) < newQuantity && newQuantity > 0){
-                        showCustomSnackBar('Out of stock');
-                      }
+                      final newQuantity = int.tryParse(_quantityController.text) ?? 0;
+                      addToCart(newQuantity);
                     },
                   ),
                 ),
 
                 IconButton(
                   onPressed: () {
-                    if (_quantity > 0) {
-                      context.read<CartCubit>().addToCart(
-                        CartProductsEntity(
-                          productId: widget.product.id!,
-                          quantity: _quantity - 1,
-                          product: widget.product,
-                        ),
-                      );
+                    if (_quantity > 1) {
+                      addToCart(_quantity - 1);
                     }else{
                       context.read<CartCubit>().removeFromCart(widget.product.id!);
                     }
@@ -118,19 +101,7 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
                 Center(child: Text('$_quantity')),
 
                 IconButton(
-                  onPressed: () {
-                    if((double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0) > _quantity){
-                      context.read<CartCubit>().addToCart(
-                        CartProductsEntity(
-                          productId: widget.product.id!,
-                          quantity: _quantity + 1,
-                          product: widget.product,
-                        ),
-                      );
-                    }else{
-                      showCustomSnackBar('Out of stock');
-                    }
-                  },
+                  onPressed: () => addToCart(_quantity + 1),
                   icon: const Icon(CupertinoIcons.add_circled),
                 ),
 
@@ -142,23 +113,25 @@ class _QuantityButtonWidgetState extends State<QuantityButtonWidget> {
         return Align(
           alignment: Alignment.bottomRight,
           child: IconButton(
-            onPressed: () {
-              if((double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0) > _quantity){
-                context.read<CartCubit>().addToCart(
-                  CartProductsEntity(
-                    productId: widget.product.id!,
-                    quantity: 1,
-                    product: widget.product,
-                  ),
-                );
-              }else{
-                showCustomSnackBar('Out of stock');
-              }
-            },
+            onPressed: () => addToCart(1),
             icon: const Icon(CupertinoIcons.cart),
           ),
         );
       },
     );
+  }
+
+  void addToCart(int qty) {
+    if((double.tryParse(widget.product.stockQty ?? '0')?.toInt() ?? 0) >= qty){
+      context.read<CartCubit>().addToCart(
+        CartProductsEntity(
+          productId: widget.product.id!,
+          quantity: qty,
+          product: widget.product,
+        ),
+      );
+    }else{
+      showCustomSnackBar('Out of stock');
+    }
   }
 }

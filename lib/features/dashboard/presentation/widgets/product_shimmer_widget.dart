@@ -113,13 +113,7 @@ class ProductShimmerWidget extends StatelessWidget {
                     child: Shimmer.fromColors(
                       baseColor: Colors.grey[300]!,
                       highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        height: 30, width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                        ),
-                      ),
+                      child: Icon(Icons.shopping_cart),
                     ),
                   ),
                 ],

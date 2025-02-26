@@ -113,13 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     BlocConsumer<AuthenticationBloc, AuthenticationState>(
                       listenWhen: (previous, current) {
-                        return current is AuthenticationLoginSuccess || current is AuthenticationFailure;
+                        return current is AuthenticationLoginSuccess || current is AuthenticationFailure || current is AuthenticationNoInternet;
                       },
                       listener: (context, state) {
                         if (state is AuthenticationLoginSuccess) {
                           context.pushNamedAndRemoveUntil(Routes.homeTab);
                         } else if (state is AuthenticationFailure) {
                           showCustomSnackBar(state.message);
+                        }else if (state is AuthenticationNoInternet) {
+                          showCustomSnackBar('No internet connection');
                         }
                       },
                       builder: (context, state) {

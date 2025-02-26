@@ -21,99 +21,69 @@ class DashboardRepositoryImpl implements DashboardRepository {
 
   @override
   Future<Either<Failure, List<ProductsEntity>>> getProducts() async{
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await remoteDataSource.getProducts());
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      return Right(await remoteDataSource.getProducts());
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Invalid Token'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 
   @override
   Future<Either<Failure, List<CartProductsEntity>>> addToCart(Map<String, dynamic> product) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final cartProducts = await localDataSource.addToCart(product);
-        return Right(cartProducts.map((model) => model.toEntity()).toList());
-        // return Right(await localDataSource.addToCart(product));
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      final cartProducts = await localDataSource.addToCart(product);
+      final cartProductsList = cartProducts.map((model) => model.toEntity()).toList();
+      return Right(cartProductsList);
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 
   @override
   Future<Either<Failure, void>> clearCart() async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await localDataSource.clearCart());
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      return Right(await localDataSource.clearCart());
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Invalid Token'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 
   @override
   Future<Either<Failure, List<CartProductsEntity>>> loadCart() async {
-    if (await networkInfo.isConnected) {
-      try {
-        final cartProducts = await localDataSource.loadCart();
-        return Right(cartProducts.map((model) => model.toEntity()).toList());
-
-        // return Right(await localDataSource.loadCart());
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      final cartProducts = await localDataSource.loadCart();
+      return Right(cartProducts.map((model) => model.toEntity()).toList());
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Invalid Token'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 
   @override
   Future<Either<Failure, List<CartProductsEntity>>> removeFromCart(int productId) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final cartProducts = await localDataSource.removeFromCart(productId);
-        return Right(cartProducts.map((model) => model.toEntity()).toList());
-
-        // return Right(await localDataSource.removeFromCart(productId));
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      final cartProducts = await localDataSource.removeFromCart(productId);
+      return Right(cartProducts.map((model) => model.toEntity()).toList());
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Invalid Token'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 
   @override
   Future<Either<Failure, String>> cartCheckout(List<Map<String, dynamic>> carts) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await remoteDataSource.cartCheckout(carts));
-      } on UnauthorizedException {
-        return const Left(TokenInvalid(message: 'Invalid Token'));
-      } catch (_) {
-        return const Left(ServerFailure(message: 'Something went wrong!'));
-      }
-    } else {
-      return const Left(ConnectionFailure(message: 'No Internet Connection!'));
+    try {
+      return Right(await remoteDataSource.cartCheckout(carts));
+    } on UnauthorizedException {
+      return const Left(TokenInvalid(message: 'Invalid Token'));
+    } catch (_) {
+      return const Left(ServerFailure(message: 'Something went wrong!'));
     }
   }
 }

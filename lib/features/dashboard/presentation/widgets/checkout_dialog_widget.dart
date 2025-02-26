@@ -1,4 +1,3 @@
-import 'package:bloc_ecommerce/common/widgets/custom_snackbar_widget.dart';
 import 'package:bloc_ecommerce/core/theme/style.dart';
 import 'package:bloc_ecommerce/core/theme/theme.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/cart_cubit/cart_cubit.dart';
@@ -66,7 +65,7 @@ class CheckoutDialogWidget extends StatelessWidget {
                               int.parse(product.product?.id.toString() ?? '0'),
                             );
                           },
-                          child: Icon(Icons.delete_forever_sharp),
+                          child: Icon(Icons.delete_forever_sharp, color: Colors.redAccent),
                         ) : Text('\$${product.product?.price}', style: fontMedium),
                         subtitle: context.read<CartCubit>().isCheckoutCartEditing
                             ? QuantityButtonWidget(product: product.product!)

@@ -13,12 +13,25 @@ abstract class DashboardLocalDataSource {
 
 class DashboardLocalDataSourceImpl implements DashboardLocalDataSource {
   final Preferences prefs;
+  late List<CartProductsModel> cart;
 
-  DashboardLocalDataSourceImpl({required this.prefs});
+  DashboardLocalDataSourceImpl({required this.prefs}) {
+    _getCart();
+  }
+
+  void _getCart() async {
+    final cartJson = prefs.getStringValue(keyName: PreferencesKey.kCartProducts);
+    if (cartJson.isEmpty) {
+      cart = <CartProductsModel>[];
+      return;
+    }
+
+    final List<dynamic> jsonList = jsonDecode(cartJson);
+    cart = jsonList.map((json) => CartProductsModel.fromJson(json)).toList();
+  }
 
   @override
   Future<List<CartProductsModel>> addToCart(Map<String, dynamic> product) async {
-    final cart = await loadCart();
     final cartProductsModel = CartProductsModel.fromJson(product);
 
     final productIndex = cart.indexWhere((item) => item.productId == cartProductsModel.productId);
@@ -27,7 +40,7 @@ class DashboardLocalDataSourceImpl implements DashboardLocalDataSource {
     } else {
       cart.add(cartProductsModel);
     }
-    await _saveCart(cart);
+    _saveCart(cart);
     return cart;
   }
 
@@ -42,17 +55,10 @@ class DashboardLocalDataSourceImpl implements DashboardLocalDataSource {
   }
 
   @override
-  Future<List<CartProductsModel>> loadCart() async {
-    final cartJson = prefs.getStringValue(keyName: PreferencesKey.kCartProducts);
-    if (cartJson.isEmpty) return [];
-
-    final List<dynamic> jsonList = jsonDecode(cartJson);
-    return jsonList.map((json) => CartProductsModel.fromJson(json)).toList();
-  }
+  Future<List<CartProductsModel>> loadCart() async => cart;
 
   @override
   Future<List<CartProductsModel>> removeFromCart(int productId) async {
-    final cart = await loadCart();
     cart.removeWhere((item) => item.productId == productId);
     await _saveCart(cart);
     return cart;

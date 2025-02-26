@@ -76,10 +76,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               listenWhen: (previous, current) => current is AllProductsError
                   || current is AllProductsSessionOut || current is AllProductsNoInternet,
               listener: (context, state) {
-                if (state is AllProductsError || state is AllProductsSessionOut) {
+                if (state is AllProductsSessionOut) {
                   context.pushNamedAndRemoveUntil(Routes.login);
                 } else if (state is AllProductsNoInternet) {
                   showCustomSnackBar('No Internet Connection');
+                } else if (state is AllProductsError) {
+                  showCustomSnackBar(state.message);
                 }
               },
               builder: (context, state) {
