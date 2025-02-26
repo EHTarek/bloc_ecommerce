@@ -10,6 +10,7 @@ import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/al
 import 'package:bloc_ecommerce/features/dashboard/presentation/business_logic/cart_cubit/cart_cubit.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/checkout_dialog_widget.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/dashboard_drawer_widget.dart';
+import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/product_shimmer_widget.dart';
 import 'package:bloc_ecommerce/features/dashboard/presentation/widgets/product_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,13 +100,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   );
                 }
-                return SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: MediaQuery.sizeOf(context).height - 100,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(),
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) => Padding(
+                      padding: EdgeInsets.only(bottom: 0),
+                      child: ProductShimmerWidget(),
                     ),
+                    childCount: 10,
                   ),
                 );
               },
